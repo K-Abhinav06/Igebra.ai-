@@ -80,11 +80,13 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 style={{
-                  color: '#1e293b',
+                  color: '#000000',
                   backgroundColor: '#ffffff',
                   borderColor: '#cbd5e1',
+                  fontSize: '16px',
+                  fontFamily: 'inherit',
                 }}
-                className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+                className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 disabled={isLoading}
               />
             </div>
@@ -101,11 +103,13 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 style={{
-                  color: '#1e293b',
+                  color: '#000000',
                   backgroundColor: '#ffffff',
                   borderColor: '#cbd5e1',
+                  fontSize: '16px',
+                  fontFamily: 'inherit',
                 }}
-                className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+                className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 disabled={isLoading}
               />
             </div>
