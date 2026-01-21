@@ -131,18 +131,12 @@ input[type="email"],
 input[type="number"],
 textarea {
   @apply w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300;
-  color: #1f2937 !important;
-  background-color: #f9fafb;
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  background-color: #ffffff !important;
   border-color: #e5e7eb;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="number"]:focus,
-textarea:focus {
-  background-color: #ffffff;
-  border-color: #3b82f6;
-  @apply focus:ring-blue-500;
+  font-size: 16px;
+  font-family: inherit;
 }
 
 input[type="text"]::placeholder,
@@ -150,7 +144,29 @@ input[type="email"]::placeholder,
 input[type="number"]::placeholder,
 textarea::placeholder {
   color: #9ca3af !important;
+  -webkit-text-fill-color: #9ca3af !important;
   opacity: 1 !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  background-color: #ffffff !important;
+  border-color: #3b82f6 !important;
+  @apply focus:ring-blue-500;
+}
+
+/* Autofill styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #000000 !important;
+  caret-color: #2563eb !important;
 }
 
 /* Dark mode input styles for main page */
@@ -160,6 +176,7 @@ main.min-h-screen input[type="number"],
 main.min-h-screen textarea {
   @apply w-full bg-white/10 backdrop-blur border border-white/20 rounded-lg px-4 py-2 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 main.min-h-screen input[type="text"]::placeholder,
@@ -167,6 +184,7 @@ main.min-h-screen input[type="email"]::placeholder,
 main.min-h-screen input[type="number"]::placeholder,
 main.min-h-screen textarea::placeholder {
   color: #d1d5db !important;
+  -webkit-text-fill-color: #d1d5db !important;
   opacity: 1 !important;
 }
 
