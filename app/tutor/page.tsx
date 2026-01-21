@@ -145,7 +145,13 @@ export default function TutorPage() {
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   placeholder="e.g., Python, Math..."
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{
+                    color: '#1f2937',
+                    backgroundColor: '#ffffff',
+                    borderColor: '#e5e7eb',
+                    caretColor: '#2563eb',
+                  }}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -210,7 +216,13 @@ export default function TutorPage() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask your question..."
-                    className="flex-1 px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder-slate-400"
+                    style={{
+                      color: '#1f2937',
+                      backgroundColor: '#ffffff',
+                      borderColor: '#e5e7eb',
+                      caretColor: '#2563eb',
+                    }}
+                    className="flex-1 px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-400"
                     disabled={isLoading}
                   />
                   <button

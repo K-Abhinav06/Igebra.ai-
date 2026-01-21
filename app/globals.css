@@ -130,21 +130,44 @@ input[type="text"],
 input[type="email"],
 input[type="number"],
 textarea {
-  @apply w-full bg-white/10 backdrop-blur border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300;
-}
-
-input[type="text"]::placeholder,
-input[type="email"]::placeholder,
-input[type="number"]::placeholder,
-textarea::placeholder {
-  @apply text-gray-200 opacity-100;
+  @apply w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300;
+  color: #1f2937 !important;
+  background-color: #f9fafb;
+  border-color: #e5e7eb;
 }
 
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus,
 textarea:focus {
-  @apply bg-white/20;
+  background-color: #ffffff;
+  border-color: #3b82f6;
+  @apply focus:ring-blue-500;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="number"]::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+/* Dark mode input styles for main page */
+main.min-h-screen input[type="text"],
+main.min-h-screen input[type="email"],
+main.min-h-screen input[type="number"],
+main.min-h-screen textarea {
+  @apply w-full bg-white/10 backdrop-blur border border-white/20 rounded-lg px-4 py-2 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300;
+  color: #ffffff !important;
+}
+
+main.min-h-screen input[type="text"]::placeholder,
+main.min-h-screen input[type="email"]::placeholder,
+main.min-h-screen input[type="number"]::placeholder,
+main.min-h-screen textarea::placeholder {
+  color: #d1d5db !important;
+  opacity: 1 !important;
 }
 
 /* Scrollbar */
