@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { TextInput } from '@/app/components/TextInput';
 
 interface Message {
   id: string;
@@ -140,20 +141,11 @@ export default function TutorPage() {
                 <label className="block text-sm font-semibold text-slate-700 mb-3">
                   📖 Topic (Optional)
                 </label>
-                <input
+                <TextInput
                   type="text"
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   placeholder="e.g., Python, Math..."
-                  style={{
-                    color: '#000 !important',
-                    backgroundColor: '#fff !important',
-                    borderColor: '#e5e7eb',
-                    caretColor: '#2563eb',
-                    fontSize: '16px',
-                    fontFamily: 'inherit',
-                    WebkitTextFillColor: '#000 !important',
-                  } as any}
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -214,20 +206,11 @@ export default function TutorPage() {
               {/* Input Form */}
               <form onSubmit={handleSubmit} className="border-t border-slate-200 p-4 bg-white rounded-b-xl">
                 <div className="flex gap-2">
-                  <input
+                  <TextInput
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask your question..."
-                    style={{
-                      color: '#000 !important',
-                      backgroundColor: '#fff !important',
-                      borderColor: '#e5e7eb',
-                      caretColor: '#2563eb',
-                      fontSize: '16px',
-                      fontFamily: 'inherit',
-                      WebkitTextFillColor: '#000 !important',
-                    } as any}
                     className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     disabled={isLoading}
                   />
