@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply box-border;
+}
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900 text-slate-50 min-h-screen;
+    background-attachment: fixed;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Global Classes */
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent font-bold;
+  background-size: 200% auto;
+}
+
+.gradient-border {
+  @apply relative;
+}
+
+.gradient-border::before {
+  content: '';
+  @apply absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 opacity-100;
+  z-index: -1;
+}
+
+.card-hover {
+  @apply transition-all duration-500 hover:shadow-2xl hover:scale-105 hover:-translate-y-1;
+}
+
+.card-glow {
+  @apply relative overflow-hidden rounded-xl border border-purple-500/20 bg-gradient-to-br from-purple-900/10 to-blue-900/10 backdrop-blur-xl;
+  animation: glow 3s ease-in-out infinite;
+}
+
+.btn-primary {
+  @apply px-6 py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-lg font-bold hover:shadow-2xl transition-all duration-300 disabled:opacity-50 hover:scale-105 hover:-translate-y-1 relative overflow-hidden;
+  background-size: 200% auto;
+}
+
+.btn-primary:hover {
+  background-position: right center;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 bg-white/10 backdrop-blur text-white border border-white/20 rounded-lg font-bold hover:bg-white/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1;
+}
+
+.btn-secondary:hover {
+  @apply border-white/40 shadow-lg;
+}
+
+.glass-effect {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl;
+}
+
+.glass-effect-dark {
+  @apply bg-black/20 backdrop-blur-xl border border-white/5 rounded-xl;
+}
+
+/* Text Gradient Animation */
+.animate-gradient {
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Loading Spinner */
+.spinner {
+  @apply inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent;
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea {
+  @apply w-full bg-white/10 backdrop-blur border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  @apply bg-white/20;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-purple-600 rounded-full hover:bg-purple-500;
+}
+
+/* Fade In Animation */
+.fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.fade-in-delay {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.fade-in-delay:nth-child(1) { animation-delay: 0.1s; }
+.fade-in-delay:nth-child(2) { animation-delay: 0.2s; }
+.fade-in-delay:nth-child(3) { animation-delay: 0.3s; }
+.fade-in-delay:nth-child(4) { animation-delay: 0.4s; }
+.fade-in-delay:nth-child(5) { animation-delay: 0.5s; }
+.fade-in-delay:nth-child(6) { animation-delay: 0.6s; }
