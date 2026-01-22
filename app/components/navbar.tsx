@@ -43,6 +43,16 @@ export function Navbar() {
               📅 Study Plan
             </Link>
             <Link
+              href="/resources"
+              className={`text-sm font-semibold transition-colors ${
+                isActive('/resources')
+                  ? 'text-blue-400'
+                  : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              📚 Resources
+            </Link>
+            <Link
               href="/features"
               className={`text-sm font-semibold transition-colors ${
                 isActive('/features')
@@ -71,6 +81,9 @@ export function Navbar() {
             </Link>
             <Link href="/study-plan" className="text-sm font-semibold px-3 py-2 bg-white/10 rounded hover:bg-white/20 transition-colors">
               Plan
+            </Link>
+            <Link href="/resources" className="text-sm font-semibold px-3 py-2 bg-white/10 rounded hover:bg-white/20 transition-colors">
+              Resources
             </Link>
           </div>
         </div>

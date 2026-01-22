@@ -161,10 +161,89 @@ export default function StudyPlannerPage() {
         {plan && (
           <div className="space-y-6 animate-fadeInUp">
             <div className="glass-effect p-8 rounded-xl">
-              <h2 className="text-2xl font-bold mb-4 gradient-text">
+              <h2 className="text-2xl font-bold mb-6 gradient-text">
                 Your {duration.replace('-', ' ')} Learning Plan
               </h2>
-              <div className="space-y-4 text-gray-300">{plan.plan || plan.response || 'Plan generated'}</div>
+
+              {/* Check if plan is array (structured) or string (raw text) */}
+              {Array.isArray(plan.plan) ? (
+                <div className="space-y-6">
+                  {plan.plan.map((week: any, index: number) => (
+                    <div key={index} className="bg-white/5 border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-colors">
+                      {/* Week Header */}
+                      <div className="flex items-center justify-between mb-4 pb-4 border-b border-white/10">
+                        <h3 className="text-xl font-bold text-blue-400">
+                          Week {week.week}
+                        </h3>
+                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          week.completed
+                            ? 'bg-green-500/20 text-green-300'
+                            : 'bg-yellow-500/20 text-yellow-300'
+                        }`}>
+                          {week.completed ? '✓ Completed' : '○ In Progress'}
+                        </span>
+                      </div>
+
+                      {/* Week Topic */}
+                      {week.topic && (
+                        <div className="mb-4">
+                          <p className="text-gray-400 text-sm font-semibold uppercase tracking-wide">Topic</p>
+                          <p className="text-white text-lg mt-1">{week.topic}</p>
+                        </div>
+                      )}
+
+                      {/* Learning Objectives */}
+                      {week.learningObjectives && week.learningObjectives.length > 0 && (
+                        <div className="mb-4">
+                          <p className="text-gray-400 text-sm font-semibold uppercase tracking-wide mb-2">Learning Objectives</p>
+                          <ul className="space-y-2">
+                            {week.learningObjectives.map((obj: string, i: number) => (
+                              <li key={i} className="text-gray-200 flex items-start gap-2">
+                                <span className="text-blue-400 mt-1">▸</span>
+                                <span>{obj}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Tasks */}
+                      {week.tasks && week.tasks.length > 0 && (
+                        <div className="mb-4">
+                          <p className="text-gray-400 text-sm font-semibold uppercase tracking-wide mb-2">Tasks & Practice</p>
+                          <ul className="space-y-2">
+                            {week.tasks.map((task: string, i: number) => (
+                              <li key={i} className="text-gray-200 flex items-start gap-2">
+                                <span className="text-purple-400 mt-1">✓</span>
+                                <span>{task}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Resources */}
+                      {week.resources && week.resources.length > 0 && (
+                        <div>
+                          <p className="text-gray-400 text-sm font-semibold uppercase tracking-wide mb-2">Resources</p>
+                          <ul className="space-y-2">
+                            {week.resources.map((resource: string, i: number) => (
+                              <li key={i} className="text-gray-200 flex items-start gap-2">
+                                <span className="text-green-400 mt-1">📌</span>
+                                <span>{resource}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4 text-gray-300 whitespace-pre-wrap">
+                  {plan.plan || plan.response || plan.rawText || 'Plan generated'}
+                </div>
+              )}
             </div>
 
             {/* Action Buttons */}

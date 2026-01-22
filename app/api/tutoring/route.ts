@@ -23,55 +23,60 @@ export async function POST(request: NextRequest) {
       await dbConnect();
     }
 
-    // 🔥 STRONG SYSTEM PROMPT (CRITICAL)
+    // 🔥 ENHANCED SYSTEM PROMPT FOR INTERACTIVE & EFFECTIVE TUTORING
     const systemPrompt = `
-You are a senior software engineer and AI tutor.
+You are an exceptional AI tutor designed to make learning engaging and effective.
 
-STRICT RULES (DO NOT BREAK):
-- When the user asks for CODE, return COMPLETE, RUNNABLE CODE FIRST.
-- Use ONLY proper markdown fenced code blocks with language tags.
-- NEVER return links instead of code.
-- NEVER summarize code unless explicitly asked.
-- Do NOT remove indentation.
-- Do NOT explain before code.
+YOUR TEACHING STYLE:
+- Be conversational, encouraging, and break complex concepts into digestible parts
+- Adapt to ${level || 'intermediate'} level: use appropriate examples and vocabulary
+- ${topic ? `Focus on ${topic}` : 'Be ready for any topic'}
+- Ask clarifying questions if the user's query is ambiguous
+- Provide examples and real-world applications
+- Use analogies to explain abstract concepts
+- Always end with a quick summary or key takeaway
 
-Teaching Level: ${level || 'intermediate'}
-Topic: ${topic || 'General Programming'}
+RESPONSE FORMAT:
+1. Direct answer to their question (clear & concise)
+2. Examples or analogies (if applicable)
+3. Code samples (if relevant, with complete, runnable code)
+4. Follow-up tip or challenge (to deepen learning)
 
-After code, give a SHORT explanation (max 5 lines).
+CODE RESPONSES:
+- Provide complete, runnable code first
+- Use proper markdown fenced code blocks with language tags
+- Include brief comments in code
+- Explain the approach, not line-by-line
+
+LENGTH GUIDELINES:
+- Keep responses focused (3-5 paragraphs max)
+- Use bullet points for lists
+- Add emojis sparingly to improve readability
+
+ENGAGEMENT TACTICS:
+- Reference previous topics if relevant
+- Suggest follow-up questions
+- Provide practice exercises for challenging topics
 `;
 
     let aiResponse = '';
 
     try {
-      if (provider === 'gemini') {
-        // ✅ Gemini prefers clean prompt
+      // Try Groq first (most reliable)
+      aiResponse = await chatWithGroq([
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: message },
+      ]);
+    } catch (groqError) {
+      console.error('Groq failed, trying Gemini:', groqError);
+      try {
+        // Fallback to Gemini
         aiResponse = await chatWithGemini(
           `${systemPrompt}\n\nUser Question:\n${message}`
         );
-      } else {
-        // ✅ Groq (Chat Completions)
-        aiResponse = await chatWithGroq([
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: message },
-        ]);
-      }
-    } catch (primaryError) {
-      console.error('Primary AI failed, switching provider:', primaryError);
-
-      try {
-        if (provider === 'groq') {
-          aiResponse = await chatWithGemini(
-            `${systemPrompt}\n\nUser Question:\n${message}`
-          );
-        } else {
-          aiResponse = await chatWithGroq([
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: message },
-          ]);
-        }
-      } catch (fallbackError) {
-        console.error('Both AI providers failed:', fallbackError);
+      } catch (geminiError) {
+        console.error('Gemini also failed, using mock response:', geminiError);
+        // Final fallback to mock
         aiResponse = getMockResponse(message);
       }
     }
@@ -101,14 +106,14 @@ After code, give a SHORT explanation (max 5 lines).
       }
     }
 
-    // ✅ IMPORTANT: return `text` (matches frontend)
-    return NextResponse.json({ text: aiResponse });
+    // ✅ IMPORTANT: return `response` (matches frontend)
+    return NextResponse.json({ response: aiResponse });
 
   } catch (error) {
     console.error('Tutoring API Error:', error);
     return NextResponse.json(
-      { error: 'Failed to process request' },
-      { status: 500 }
+      { response: 'Sorry, I could not generate a response. Please try again.' },
+      { status: 200 }
     );
   }
 }

@@ -49,7 +49,14 @@ export interface IStudyPlan extends Document {
   topic: string;
   duration: '1-week' | '2-weeks' | '1-month' | '3-months';
   level: 'beginner' | 'intermediate' | 'advanced';
-  plan: string;
+  plan: {
+    week: number;
+    topic: string;
+    learningObjectives: string[];
+    resources: string[];
+    tasks: string[];
+    completed: boolean;
+  }[];
   status: 'active' | 'completed' | 'paused';
   progress: number;
   createdAt: Date;
@@ -109,7 +116,16 @@ const StudyPlanSchema: Schema = new Schema(
     topic: { type: String, required: true },
     duration: { type: String, enum: ['1-week', '2-weeks', '1-month', '3-months'], required: true },
     level: { type: String, enum: ['beginner', 'intermediate', 'advanced'], required: true },
-    plan: { type: String, required: true },
+    plan: [
+      {
+        week: { type: Number, required: true },
+        topic: { type: String, required: true },
+        learningObjectives: [String],
+        resources: [String],
+        tasks: [String],
+        completed: { type: Boolean, default: false },
+      },
+    ],
     status: { type: String, enum: ['active', 'completed', 'paused'], default: 'active' },
     progress: { type: Number, default: 0 },
   },

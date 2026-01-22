@@ -3,6 +3,88 @@ import { chatWithGroq, chatWithGemini } from '@/lib/ai-providers';
 import dbConnect from '@/lib/db';
 import { StudyPlan } from '@/lib/models';
 
+// Parse study plan text into structured weeks
+function parseStudyPlan(text: string) {
+  const weeks: any[] = [];
+  const lines = text.split('\n');
+  let currentWeek: any = null;
+  let currentSection = '';
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    // Detect week markers (Week 1, Week 2, etc.)
+    const weekMatch = trimmed.match(/(?:^|\*\*)?Week\s+(\d+)(?:\*\*)?/i);
+    if (weekMatch) {
+      if (currentWeek) {
+        weeks.push(currentWeek);
+      }
+      currentWeek = {
+        week: parseInt(weekMatch[1]),
+        topic: '',
+        learningObjectives: [],
+        resources: [],
+        tasks: [],
+        completed: false,
+      };
+      currentSection = 'header';
+      continue;
+    }
+
+    if (!currentWeek) continue;
+
+    // Detect sections
+    if (trimmed.toLowerCase().includes('learning objectives') || trimmed.toLowerCase().includes('topics to cover')) {
+      currentSection = 'objectives';
+      continue;
+    }
+    if (trimmed.toLowerCase().includes('practice') || trimmed.toLowerCase().includes('exercises') || trimmed.toLowerCase().includes('tasks')) {
+      currentSection = 'tasks';
+      continue;
+    }
+    if (trimmed.toLowerCase().includes('resources') || trimmed.toLowerCase().includes('materials')) {
+      currentSection = 'resources';
+      continue;
+    }
+
+    // Extract content
+    if (trimmed && !trimmed.startsWith('#')) {
+      const cleanLine = trimmed
+        .replace(/^\*\*/, '')
+        .replace(/\*\*$/, '')
+        .replace(/^\d+\.\s+/, '')
+        .replace(/^-\s+/, '')
+        .replace(/^\+\s+/, '')
+        .trim();
+
+      if (cleanLine) {
+        if (currentSection === 'objectives') {
+          currentWeek.learningObjectives.push(cleanLine);
+        } else if (currentSection === 'tasks') {
+          currentWeek.tasks.push(cleanLine);
+        } else if (currentSection === 'resources') {
+          currentWeek.resources.push(cleanLine);
+        } else if (currentSection === 'header' && !currentWeek.topic) {
+          currentWeek.topic = cleanLine;
+        }
+      }
+    }
+  }
+
+  if (currentWeek) {
+    weeks.push(currentWeek);
+  }
+
+  return weeks.length > 0 ? weeks : [{
+    week: 1,
+    topic: 'Complete Study Plan',
+    learningObjectives: [text],
+    resources: [],
+    tasks: [],
+    completed: false,
+  }];
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { topic, duration, level, provider, userId } = await request.json();
@@ -56,6 +138,9 @@ Make it specific, actionable, and motivating.`;
       response = await chatWithGroq(messages);
     }
 
+    // Parse the response into structured weeks
+    const parsedPlan = parseStudyPlan(response);
+
     // Save study plan to database if userId provided and DB is configured
     if (userId && hasValidDb) {
       try {
@@ -64,7 +149,7 @@ Make it specific, actionable, and motivating.`;
           topic,
           duration,
           level,
-          plan: response,
+          plan: parsedPlan,
           status: 'active',
           progress: 0,
         });
@@ -73,7 +158,7 @@ Make it specific, actionable, and motivating.`;
       }
     }
 
-    return NextResponse.json({ plan: response });
+    return NextResponse.json({ plan: parsedPlan, rawText: response });
   } catch (error) {
     console.error('Study Plan API Error:', error);
     return NextResponse.json(
